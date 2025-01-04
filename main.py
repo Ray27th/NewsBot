@@ -11,7 +11,7 @@ app = FastAPI()
 
 # Set up bot with a prefix
 intents = discord.Intents.default()
-intents.messages = True  # Enable message events
+intents.messages = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 

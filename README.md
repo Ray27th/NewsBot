@@ -17,5 +17,15 @@ flyctl
 
 Redeploy
 ```shell
-fly deploy --ha=false
+flyctl deploy
+```
+
+If there are duplicated responses [Due to multiple vm start ups]
+```shell
+flyctl scale count 1
+```
+
+Check status of application
+```shell
+flyctl status
 ```
