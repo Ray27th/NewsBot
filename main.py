@@ -2,14 +2,23 @@ import discord
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
-
+from fastapi import FastAPI
+import asyncio
 
 load_dotenv()
+
+app = FastAPI()
+
 # Set up bot with a prefix
 intents = discord.Intents.default()
 intents.messages = True  # Enable message events
 
 bot = commands.Bot(command_prefix="!", intents=intents)
+
+
+@app.on_event("startup")
+async def startup():
+    asyncio.create_task(bot.start(os.environ["DISCORD_BOT"]))
 
 
 # Event: Bot is ready
@@ -47,5 +56,6 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-# Run the bot with your token
-bot.run(os.environ["DISCORD_BOT"])
+@app.get("/")
+def start():
+    return {"Hello": "World"}

@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 py-cord = {extras = ["speed"], version = "*"}
 python-dotenv = "*"
+fastapi = {extras = ["standard"], version = "*"}
+uvicorn = "*"
 
 [dev-packages]
 
