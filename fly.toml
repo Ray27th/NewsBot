@@ -1,12 +1,10 @@
-# fly.toml app configuration file generated for syai-newsbot on 2025-01-04T11:07:34+08:00
+# fly.toml app configuration file generated for syai-newsbot on 2025-01-05T00:32:06+08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'syai-newsbot'
 primary_region = 'sin'
-
-[build]
 
 [http_service]
   internal_port = 8080
