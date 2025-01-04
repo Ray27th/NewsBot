@@ -44,6 +44,7 @@ async def add(ctx, num1: int, num2: int):
 @bot.event
 async def on_message(message):
     print(message)
+    print(dir(message))
     if message.author.bot:  # Ignore bot messages
         return
 
