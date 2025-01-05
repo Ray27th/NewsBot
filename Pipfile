@@ -8,6 +8,7 @@ py-cord = {extras = ["speed"], version = "*"}
 python-dotenv = "*"
 fastapi = {extras = ["standard"], version = "*"}
 uvicorn = "*"
+aiocron = "*"
 
 [dev-packages]
 

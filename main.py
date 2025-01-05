@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 import asyncio
+import aiocron
 
 load_dotenv()
 
@@ -43,10 +44,12 @@ async def add(ctx, num1: int, num2: int):
 # Event: Responding to specific keywords
 @bot.event
 async def on_message(message):
-    print(message)
-    print(dir(message))
     if message.author.bot:  # Ignore bot messages
         return
+
+    print(message)
+    print(dir(message))
+    print(message.content)
 
     await message.channel.send(message.author)
 
@@ -60,3 +63,11 @@ async def on_message(message):
 @app.get("/")
 def start():
     return {"Hello": "World"}
+
+
+BOT_CHANNELS = int(os.environ["BOT_CHANNEL"])
+
+
+@aiocron.crontab("* * * * * */20")
+async def HelloWorld():
+    await bot.get_channel(BOT_CHANNELS).send("Hello World!")
