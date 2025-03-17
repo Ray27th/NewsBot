@@ -9,6 +9,7 @@ python-dotenv = "*"
 fastapi = {extras = ["standard"], version = "*"}
 uvicorn = "*"
 aiocron = "*"
+ruff = "*"
 
 [dev-packages]
 
