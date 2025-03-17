@@ -30,7 +30,7 @@ bot = commands.Bot(command_prefix=command_prefix, intents=intents)
 async def startup():
     # Create file first
     with open('logs.log', 'w') as f:
-        f.write()
+        f.write("")
     asyncio.create_task(bot.start(os.environ["DISCORD_BOT"]))
 
 
