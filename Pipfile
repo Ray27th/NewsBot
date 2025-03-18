@@ -10,6 +10,9 @@ fastapi = {extras = ["standard"], version = "*"}
 uvicorn = "*"
 aiocron = "*"
 ruff = "*"
+python-telegram-bot = "*"
+supabase = "*"
+aiogram = "*"
 
 [dev-packages]
 

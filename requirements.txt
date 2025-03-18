@@ -1,56 +1,73 @@
 -i https://pypi.org/simple
 aiocron==1.8
+aiofiles==24.1.0; python_version >= '3.8'
+aiogram==3.13.1; python_version >= '3.8'
 aiohappyeyeballs==2.4.4; python_version >= '3.8'
 aiohttp[speedups]==3.10.11; python_version >= '3.8'
 aiosignal==1.3.1; python_version >= '3.7'
 annotated-types==0.7.0; python_version >= '3.8'
 anyio==4.5.2; python_version >= '3.8'
-async-timeout==5.0.1; python_version < '3.11'
-attrs==24.3.0; python_version >= '3.8'
+async-timeout==5.0.1; python_version >= '3.8'
+attrs==25.3.0; python_version >= '3.8'
 backports.zoneinfo==0.2.1; python_version < '3.9'
 brotli==1.1.0
-certifi==2024.12.14; python_version >= '3.6'
+certifi==2025.1.31; python_version >= '3.6'
 click==8.1.8; python_version >= '3.7'
 colorama==0.4.6; platform_system == 'Windows'
 croniter==6.0.0; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
+deprecation==2.1.0
 dnspython==2.6.1; python_version >= '3.8'
 email-validator==2.2.0
-exceptiongroup==1.2.2; python_version < '3.11'
+exceptiongroup==1.2.2; python_version >= '3.7'
 fastapi[standard]==0.115.6; python_version >= '3.8'
 fastapi-cli[standard]==0.0.7
 frozenlist==1.5.0; python_version >= '3.8'
+gotrue==2.9.2; python_version >= '3.8' and python_version < '4.0'
 h11==0.14.0; python_version >= '3.7'
+h2==4.1.0; python_full_version >= '3.6.1'
+hpack==4.0.0; python_full_version >= '3.6.1'
 httpcore==1.0.7; python_version >= '3.8'
 httptools==0.6.4
-httpx==0.28.1
+httpx[http2]==0.27.2; python_version >= '3.8'
+hyperframe==6.0.1; python_full_version >= '3.6.1'
 idna==3.10; python_version >= '3.6'
 jinja2==3.1.5
+magic-filter==1.0.12; python_version >= '3.7'
 markdown-it-py==3.0.0; python_version >= '3.8'
 markupsafe==2.1.5; python_version >= '3.7'
 mdurl==0.1.2; python_version >= '3.7'
 msgspec==0.18.6
 multidict==6.1.0; python_version >= '3.8'
+packaging==24.2; python_version >= '3.8'
+postgrest==0.16.11; python_version >= '3.8' and python_version < '4.0'
 propcache==0.2.0; python_version >= '3.8'
 py-cord[speed]==2.6.1; python_version >= '3.8'
-pydantic==2.10.4; python_version >= '3.8'
-pydantic-core==2.27.2; python_version >= '3.8'
+pydantic==2.8.2; python_version >= '3.8'
+pydantic-core==2.20.1; python_version >= '3.8'
 pygments==2.18.0; python_version >= '3.8'
-python-dateutil==2.9.0.post0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+python-dateutil==2.9.0.post0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'
 python-dotenv==1.0.1; python_version >= '3.8'
 python-multipart==0.0.20
+python-telegram-bot==21.6; python_version >= '3.8'
 pytz==2024.2
 pyyaml==6.0.2
+realtime==1.0.6; python_version >= '3.8' and python_version < '4.0'
 rich==13.9.4; python_full_version >= '3.8.0'
 rich-toolkit==0.12.0; python_version >= '3.8'
+ruff==0.11.0; python_version >= '3.7'
 shellingham==1.5.4; python_version >= '3.7'
-six==1.17.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+six==1.17.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'
 sniffio==1.3.1; python_version >= '3.7'
 starlette==0.41.3; python_version >= '3.8'
+storage3==0.7.7; python_version >= '3.8' and python_version < '4.0'
+strenum==0.4.15
+supabase==2.6.0; python_version >= '3.8' and python_version < '4.0'
+supafunc==0.5.1; python_version >= '3.8' and python_version < '4.0'
 typer==0.15.1; python_version >= '3.7'
 typing-extensions==4.12.2; python_version >= '3.8'
 tzdata==2024.2; platform_system == 'Windows'
 tzlocal==5.2; python_version >= '3.8'
 uvicorn[standard]==0.33.0; python_version >= '3.8'
 watchfiles==0.24.0
-websockets==13.1
+websockets==12.0; python_version >= '3.8'
 yarl==1.15.2; python_version >= '3.8'
