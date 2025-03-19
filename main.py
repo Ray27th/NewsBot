@@ -12,8 +12,8 @@ import aiocron
 from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart
-from aiogram.types import Message
+from aiogram.filters import ChatMemberUpdatedFilter, CommandStart, IS_MEMBER, IS_NOT_MEMBER
+from aiogram.types import ChatMemberUpdated, Message
 import discord
 from discord.ext import commands, tasks
 from fastapi import FastAPI
@@ -89,6 +89,16 @@ async def on_message(message):
 @dp.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
     await message.answer(f"Hello, {html.bold(message.from_user.full_name)}!")
+
+@dp.chat_member(ChatMemberUpdatedFilter(IS_NOT_MEMBER >> IS_MEMBER))
+async def greet_new_member(event: ChatMemberUpdated):
+    new_user = event.new_chat_member.user
+    chat_id = event.chat.id
+
+    welcome_message = f"Welcome, {new_user.mention_html()}! 👋 We're glad you're here."
+    
+    # Send welcome message
+    await telegram_bot.send_message(chat_id, welcome_message)
 
 @dp.message()
 async def echo_handler(message: Message) -> None:
