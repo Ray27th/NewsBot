@@ -102,9 +102,13 @@ async def greet_new_member(event: ChatMemberUpdated):
 
 @dp.message()
 async def echo_handler(message: Message) -> None:
+    if message.from_user.id == (await bot.me()).id:  # Ignore messages from the bot itself
+        return
+
     try:
         await message.send_copy(chat_id=message.chat.id)
-        await send_message_to_chat(TELEGRAM_CHAT_ID, "NEW Scheduled Post🚀 Automated Message!")
+        await send_message_to_chat(message.chat.id, message.text)
+        await send_message_to_chat(TELEGRAM_CHAT_ID, "This is just a repeat test")
     except TypeError:
         await message.answer("Nice try!")
 
