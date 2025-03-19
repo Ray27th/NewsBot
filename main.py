@@ -74,7 +74,7 @@ async def hello(ctx):
 @discord_bot.event
 async def on_message(message):
     try:
-        logger(f"[Message] {message.author}: {message.content}")
+        logger(f"[Discord Message] {message.author}: {message.content}")
         if message.author.bot:  # Ignore bot messages
             return
 
@@ -102,14 +102,15 @@ async def greet_new_member(event: ChatMemberUpdated):
 
 @dp.message()
 async def echo_handler(message: Message) -> None:
-    if message.from_user.id == (await bot.me()).id:  # Ignore messages from the bot itself
+    logger(f"[Telegram Message] {message.from_user.username}: {message.text}")
+    if message.from_user.id == (await telegram_bot.me()).id:  # Ignore messages from the bot itself
         return
 
     try:
         await message.send_copy(chat_id=message.chat.id)
         await send_message_to_chat(message.chat.id, message.text)
         await send_message_to_chat(TELEGRAM_CHAT_ID, "This is just a repeat test")
-    except TypeError:
+    except:
         await message.answer("Nice try!")
 
 async def send_message_to_chat(chat_id: int, message: str):
