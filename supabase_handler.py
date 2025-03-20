@@ -10,17 +10,17 @@ record_data = []
 
 def get_data():
     response = supabase.table("syai_news").select("*").execute()
-    print(response.data)
+    return response.data
 
 
-def handle_record_updated():
-    pass
+# def handle_record_updated():
+#     pass
 
 
-response = (
-    supabase.channel("room1")
-    .on_postgres_changes(
-        "*", schema="public", table="syai_news", callback=handle_record_updated
-    )
-    .subscribe()
-)
+#     response = (
+#         supabase.channel("room1")
+#         .on_postgres_changes(
+#             "*", schema="public", table="syai_news", callback=handle_record_updated
+#         )
+#         .subscribe()
+#     )

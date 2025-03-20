@@ -9,7 +9,7 @@ import os
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, HTMLResponse
 
-from supabase_handler import response
+from supabase_handler import get_data
 
 # Setup .env file
 load_dotenv()
@@ -20,17 +20,12 @@ app = FastAPI()
 @app.on_event("startup")
 async def startup():
     # Clear Logs
-
-    with open("logs.log", "w"):
-        pass
-    logger("[System] Logger Starting Up......")
+    clear_logs()
 
     # Start Discord Bot
-
     asyncio.create_task(discord_bot.start(os.environ["DISCORD_BOT"]))
 
     # Start Telegram Bot
-
     logger(
         f"[System] Telegram Bot logged in as {(await telegram_bot.get_my_name()).name}"
     )
@@ -40,7 +35,7 @@ async def startup():
 ### === FASTAPI ROUTES === ###
 @app.get("/")
 def start():
-    print(response)
+    logger(get_data())
     return {"message": "Bots are active!"}
 
 
@@ -54,7 +49,7 @@ def get_logs():
             <meta http-equiv="refresh" content="30">
         </head>
         <body>
-            <a href="/clear-logs">Clear Logs</a>
+            <a href="/clear">Clear Logs</a>
             <pre>{data}</pre>
         </body>
     </html>
@@ -62,11 +57,16 @@ def get_logs():
     return formatted_content
 
 
-@app.get("/clear-logs", response_class=RedirectResponse)
+@app.get("/clear", response_class=RedirectResponse)
+def clear():
+    clear_logs()
+    return "/logs"
+
+
 def clear_logs():
     with open("logs.log", "w") as f:
         f.write("")
-    return "/logs"
+    logger("[System] Logger Starting Up......")
 
 
 # @discord_bot.command()
