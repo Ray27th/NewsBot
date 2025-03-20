@@ -54,7 +54,7 @@ async def startup():
     asyncio.create_task(discord_bot.start(os.environ["DISCORD_BOT"]))
 
     # Start Telegram Bot
-    logger(f"[System] Telegram Bot logged in as {await telegram_bot.get_my_name()}")
+    logger(f"[System] Telegram Bot logged in as {(await telegram_bot.get_my_name()).name}")
     asyncio.create_task(dp.start_polling(telegram_bot))
 
 
@@ -118,7 +118,7 @@ async def echo_handler(message: Message) -> None:
 
 async def send_message_to_chat(chat_id: int, message: str):
     """Send a message to a specific Telegram chat."""
-    logger(f"[Telegram Message] {(await telegram_bot.me()).id}: {message}")
+    logger(f"[Telegram Message] {(await telegram_bot.get_my_name()).name}: {message}")
     await telegram_bot.send_message(chat_id=chat_id, text=message,message_thread_id=2)
 
 ### === DISCORD & TELEGRAM SCHEDULED TASK === ###
