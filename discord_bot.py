@@ -4,7 +4,7 @@ from schedule_handler import tasks_loop
 import os
 
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
 
 
 # Discord Bot Setup
@@ -13,6 +13,7 @@ intents.message_content = True
 command_prefix = "/"
 FORUM_CHANNEL_ID = int(os.environ["FORUM_CHANNEL_ID"])
 discord_bot = commands.Bot(command_prefix=command_prefix, intents=intents)
+
 
 ### === DISCORD BOT EVENTS === ###
 @discord_bot.event
@@ -40,5 +41,7 @@ async def on_message(message):
         if message.content.startswith(command_prefix):
             # Ensure commands are processed
             await discord_bot.process_commands(message)
-    except:
-        logger("Error occurred at `on_message` function", "ERROR")
+    except TypeError:
+        logger("[Discord] TypeError occurred at `on_message` function", "ERROR")
+    except NameError:
+        logger("[Discord] NameError occurred at `on_message` function", "ERROR")

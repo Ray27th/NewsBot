@@ -9,6 +9,7 @@ import os
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, HTMLResponse
 
+from supabase_handler import response
 
 # Setup .env file
 load_dotenv()
@@ -20,9 +21,9 @@ app = FastAPI()
 async def startup():
     # Clear Logs
 
-    with open("logs.log", "w") as f:
+    with open("logs.log", "w"):
         pass
-    logger(f"[System] Logger Starting Up......")
+    logger("[System] Logger Starting Up......")
 
     # Start Discord Bot
 
@@ -39,6 +40,7 @@ async def startup():
 ### === FASTAPI ROUTES === ###
 @app.get("/")
 def start():
+    print(response)
     return {"message": "Bots are active!"}
 
 
@@ -56,7 +58,7 @@ def get_logs():
             <pre>{data}</pre>
         </body>
     </html>
-    """  # Preserves formatting
+    """
     return formatted_content
 
 
@@ -83,5 +85,3 @@ def clear_logs():
 #         await ctx.send("❌ Bot lacks permissions to create forum posts.")
 #     except discord.HTTPException as e:
 #         await ctx.send(f"❌ Failed to create post: {e}")
-
-
