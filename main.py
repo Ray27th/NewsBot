@@ -52,6 +52,8 @@ async def startup():
     # Start Discord Bot
     asyncio.create_task(discord_bot.start(os.environ["DISCORD_BOT"]))
 
+    # Start Telegram Bot
+    logger(f"[System] Telegram Bot logged in as {await telegram_bot.get_my_name()}")
     asyncio.create_task(dp.start_polling(telegram_bot))
 
 
