@@ -115,7 +115,7 @@ async def echo_handler(message: Message) -> None:
 
 async def send_message_to_chat(chat_id: int, message: str):
     """Send a message to a specific Telegram chat."""
-    logger(f"YOU TRIED {chat_id}")
+    logger(f"[Telegram Message] {(await telegram_bot.me()).id}: {message}")
     await telegram_bot.send_message(chat_id=chat_id, text=message,message_thread_id=2)
 
 ### === DISCORD & TELEGRAM SCHEDULED TASK === ###
