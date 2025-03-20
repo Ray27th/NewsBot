@@ -48,6 +48,7 @@ async def startup():
     # Clear Logs
     with open('logs.log', 'w') as f:
         pass
+    logger(f"[System] Logger Starting Up......")
 
     # Start Discord Bot
     asyncio.create_task(discord_bot.start(os.environ["DISCORD_BOT"]))
@@ -65,7 +66,7 @@ async def on_ready():
     # Start the scheduled task
     if not tasks_loop.is_running():
         tasks_loop.start()
-        logger("[System] Scheduled task started.")
+        logger("[System] Scheduled task started")
 
 
 @discord_bot.command()
