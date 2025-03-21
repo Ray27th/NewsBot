@@ -1,5 +1,3 @@
-from log_handler import logger
-
 import os
 
 from aiogram import Bot, Dispatcher, html
@@ -12,6 +10,7 @@ from aiogram.filters import (
 )
 from aiogram.types import ChatMemberUpdated, Message
 
+from log_handler import logger
 
 # Telegram Bot Setup
 dp = Dispatcher()

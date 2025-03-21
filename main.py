@@ -1,7 +1,3 @@
-from discord_bot import discord_bot
-from log_handler import logger
-from telegram_bot import telegram_bot, dp
-
 import asyncio
 from dotenv import load_dotenv
 import os
@@ -9,7 +5,11 @@ import os
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, HTMLResponse
 
+from discord_bot import discord_bot
+from log_handler import logger
 from supabase_handler import get_data
+from telegram_bot import telegram_bot, dp
+
 
 # Setup .env file
 load_dotenv()
@@ -18,7 +18,7 @@ app = FastAPI()
 
 
 @app.on_event("startup")
-async def startup():
+async def startup() -> None:
     # Clear Logs
     clear_logs()
 
@@ -67,21 +67,3 @@ def clear_logs():
     with open("logs.log", "w") as f:
         f.write("")
     logger("[System] Logger Starting Up......")
-
-
-# @discord_bot.command()
-# async def create_forum_post(ctx, title: str, *, content: str):
-#     """Creates a forum post in a specific forum channel."""
-#     forum_channel = discord_bot.get_channel(FORUM_CHANNEL_ID)
-
-#     if not isinstance(forum_channel, discord.ForumChannel):
-#         await ctx.send("The specified channel is not a forum channel!")
-#         return
-
-#     try:
-#         thread = await forum_channel.create_thread(name=title, content=content)
-#         await ctx.send(f"✅ Forum post created: {thread.jump_url}")
-#     except discord.Forbidden:
-#         await ctx.send("❌ Bot lacks permissions to create forum posts.")
-#     except discord.HTTPException as e:
-#         await ctx.send(f"❌ Failed to create post: {e}")

@@ -1,10 +1,10 @@
-from log_handler import logger
-from schedule_handler import tasks_loop
-
 import os
 
 import discord
 from discord.ext import commands
+
+from log_handler import logger
+from schedule_handler import tasks_loop
 
 
 # Discord Bot Setup
