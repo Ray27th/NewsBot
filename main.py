@@ -7,7 +7,7 @@ from fastapi.responses import RedirectResponse, HTMLResponse
 
 from discord_bot import discord_bot
 from log_handler import logger
-from supabase_handler import get_data
+from supabase_handler import get_data, start_realtime_listener
 from telegram_bot import telegram_bot, dp
 
 
@@ -30,6 +30,9 @@ async def startup() -> None:
         f"[System] Telegram Bot logged in as {(await telegram_bot.get_my_name()).name}"
     )
     asyncio.create_task(dp.start_polling(telegram_bot))
+    
+    # Start Supabase Realtime Listener
+    start_realtime_listener()
 
 
 ### === FASTAPI ROUTES === ###

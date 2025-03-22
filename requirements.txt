@@ -74,5 +74,6 @@ tzdata==2025.1; python_version >= '2'
 tzlocal==5.2; python_version >= '3.8'
 uvicorn[standard]==0.33.0; python_version >= '3.8'
 watchfiles==0.24.0
+websocket-client==1.8.0; python_version >= '3.8'
 websockets==12.0; python_version >= '3.8'
 yarl==1.15.2; python_version >= '3.8'

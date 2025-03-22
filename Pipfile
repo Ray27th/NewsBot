@@ -15,6 +15,7 @@ supabase = "*"
 black = "*"
 ruff = "*"
 pytz = "*"
+websocket-client = "*"
 
 [dev-packages]
 
