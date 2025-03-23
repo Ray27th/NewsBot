@@ -75,7 +75,7 @@ def start_realtime_listener():
         # Step 1: JOIN the channel
         join_msg = {"topic": topic, "event": "phx_join", "payload": {}, "ref": "1"}
         logger(f"[Supabase] Sending JOIN: {join_msg}")
-        # ws.send(json.dumps(join_msg))
+        ws.send(json.dumps(join_msg))
 
         # Step 2: Subscribe to INSERT/UPDATE/DELETE
         for i, event_type in enumerate(["INSERT", "UPDATE", "DELETE"], start=2):
@@ -91,11 +91,9 @@ def start_realtime_listener():
     def on_message(ws, message):
         try:
             data = json.loads(message)
-            logger(f"[Supabase] Raw WebSocket Message: {message}")
-            if data.get("topic") != "phoenix":
+            if data.get("event") != "phx_reply":
                 logger(f"[Supabase] Raw WebSocket Message: {message}")
 
-            logger(f"TEST {data.get('event')}")
             if data.get("event") in ["INSERT", "UPDATE", "DELETE"]:
                 payload = data.get("payload")
                 logger(
