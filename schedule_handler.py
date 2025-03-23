@@ -30,26 +30,32 @@ async def tasks_loop():
     if now.hour == midnight_time.hour and now.minute == midnight_time.minute:
         app.state.news_data = get_data_after_date(now.isoformat())
 
-    if (
-        now.hour == target_time.hour
-        and now.minute == target_time.minute
-        and len(app.state.news_data) > 0
-    ):
-        from discord_bot import (
-            discord_bot,
-            FORUM_CHANNEL_ID,
-        )  # Import here to avoid circular dependency
+    if len(app.state.news_data) > 0:
+        first_news_article = app.state.news_data[0]
+        first_news_time = datetime.datetime.fromisoformat(
+            first_news_article["timestamp"]
+        ).astimezone(sgt)
 
-        logger("[System] Scheduled Task Executed for Discord and Telegram")
+        if now.hour == first_news_time.hour and now.minute == first_news_time.minute:
+            from discord_bot import (
+                discord_bot,
+                FORUM_CHANNEL_ID,
+            )  # Import here to avoid circular dependency
 
-        # Send Telegram Message
-        await send_message_to_chat(
-            TELEGRAM_CHAT_ID, "NEW Scheduled Post🚀 Automated Message!"
-        )
+            logger("[System] Scheduled Task Executed for Discord and Telegram")
 
-        # Send Discord Message
-        forum_channel = discord_bot.get_channel(FORUM_CHANNEL_ID)
-        if forum_channel:
-            await forum_channel.create_thread(
-                name="NEW Scheduled Post", content="🚀 Automated Message!"
+            # Send Telegram Message
+            await send_message_to_chat(
+                TELEGRAM_CHAT_ID,
+                f"<strong>{first_news_article['title']}</strong><br/><br/>{first_news_article['content']}",
             )
+
+            # Send Discord Message
+            forum_channel = discord_bot.get_channel(FORUM_CHANNEL_ID)
+            if forum_channel:
+                await forum_channel.create_thread(
+                    name=first_news_article["title"],
+                    content=first_news_article["content"],
+                )
+
+            app.state.news_data = get_data_after_date(now.isoformat())

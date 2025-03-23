@@ -28,7 +28,13 @@ def get_data_after_date(date_str: str = None) -> List:
         if date_str is None:
             response = supabase.table(TABLE).select("*").execute()
             return response.data
-        response = supabase.table(TABLE).select("*").gt(DATE_COLUMN, date_str).execute()
+        response = (
+            supabase.table(TABLE)
+            .select("*")
+            .gt(DATE_COLUMN, date_str)
+            .order(DATE_COLUMN)
+            .execute()
+        )
         return response.data
     except Exception as e:
         logger(
@@ -96,9 +102,7 @@ def start_realtime_listener():
 
             if data.get("event") in ["INSERT", "UPDATE", "DELETE"]:
                 payload = data.get("payload")
-                logger(
-                    f"[Supabase] Event: {payload['type']} — {json.dumps(payload, indent=2)}"
-                )
+                logger(f"[Supabase] Event: {payload['type']} — {payload}")
 
                 # When there is a event change
                 now = datetime.datetime.now(sgt)
