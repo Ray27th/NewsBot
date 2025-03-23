@@ -91,8 +91,10 @@ def start_realtime_listener():
     def on_message(ws, message):
         try:
             data = json.loads(message)
-            if data.get("event") in ["INSERT", "UPDATE", "DELETE"]:
+            if data.get("topic") != "phoenix":
                 logger(f"[Supabase] Raw WebSocket Message: {message}")
+
+            if data.get("event") in ["INSERT", "UPDATE", "DELETE"]:
                 payload = data.get("payload")
                 logger(
                     f"[Supabase] Event: {payload['type']} — {json.dumps(payload, indent=2)}"
