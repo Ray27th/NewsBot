@@ -4,6 +4,7 @@ from discord.ext import tasks
 import pytz
 
 from app_instance import app
+from log_handler import logger
 from supabase_handler import get_data_after_date
 from telegram_bot import send_message_to_chat, TELEGRAM_CHAT_ID
 
@@ -39,7 +40,7 @@ async def tasks_loop():
             FORUM_CHANNEL_ID,
         )  # Import here to avoid circular dependency
 
-        print("[System] Scheduled Task Executed for Discord and Telegram")
+        logger("[System] Scheduled Task Executed for Discord and Telegram")
 
         # Send Telegram Message
         await send_message_to_chat(

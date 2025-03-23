@@ -1,13 +1,16 @@
-# supabase_handler.py
-from typing import List
-import os
+import datetime
 import json
-import time
+import os
 import threading
+import time
+from typing import List
 import websocket
+
+import pytz
 from supabase import create_client, Client
 
-from log_handler import logger  # Assuming you have a logger() function
+from app_instance import app
+from log_handler import logger
 
 # Setup
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -16,6 +19,7 @@ TABLE = "syai_news"  # Change as needed
 SCHEMA = "public"
 DATE_COLUMN = "post_date"
 
+sgt = pytz.timezone("Asia/Singapore")
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
@@ -71,7 +75,7 @@ def start_realtime_listener():
         # Step 1: JOIN the channel
         join_msg = {"topic": topic, "event": "phx_join", "payload": {}, "ref": "1"}
         logger(f"[Supabase] Sending JOIN: {join_msg}")
-        ws.send(json.dumps(join_msg))
+        # ws.send(json.dumps(join_msg))
 
         # Step 2: Subscribe to INSERT/UPDATE/DELETE
         for i, event_type in enumerate(["INSERT", "UPDATE", "DELETE"], start=2):
@@ -85,14 +89,19 @@ def start_realtime_listener():
             ws.send(json.dumps(sub_msg))
 
     def on_message(ws, message):
-        logger(f"[Supabase] Raw WebSocket Message: {message}")
         try:
             data = json.loads(message)
-            if data.get("event") == "postgres_changes":
+            if data.get("event") in ["INSERT", "UPDATE", "DELETE"]:
+                logger(f"[Supabase] Raw WebSocket Message: {message}")
                 payload = data.get("payload")
                 logger(
                     f"[Supabase] Event: {payload['type']} — {json.dumps(payload, indent=2)}"
                 )
+
+                # When there is a event change
+                now = datetime.datetime.now(sgt)
+                app.state.news_data = get_data_after_date(now.isoformat())
+
         except Exception as e:
             logger(f"[Supabase] Message error: {e}")
 
