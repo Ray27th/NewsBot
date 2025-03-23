@@ -1,20 +1,21 @@
 import asyncio
+import datetime
 from dotenv import load_dotenv
 import os
 
-from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, HTMLResponse
 
+from app_instance import app
 from discord_bot import discord_bot
 from log_handler import logger
-from supabase_handler import get_data, start_realtime_listener
+from schedule_handler import sgt
+from supabase_handler import start_realtime_listener, get_data_after_date
 from telegram_bot import telegram_bot, dp
-
 
 # Setup .env file
 load_dotenv()
 
-app = FastAPI()
+app.state.news_data = []
 
 
 @app.on_event("startup")
@@ -30,15 +31,19 @@ async def startup() -> None:
         f"[System] Telegram Bot logged in as {(await telegram_bot.get_my_name()).name}"
     )
     asyncio.create_task(dp.start_polling(telegram_bot))
-    
+
     # Start Supabase Realtime Listener
     start_realtime_listener()
+
+    # Get news data
+    now = datetime.datetime.now(sgt)
+    app.state.news_data = get_data_after_date(now.isoformat())
 
 
 ### === FASTAPI ROUTES === ###
 @app.get("/")
 def start():
-    logger(get_data())
+    logger(f"[Data] {app.state.news_data}")
     return {"message": "Bots are active!"}
 
 

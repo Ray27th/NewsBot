@@ -41,7 +41,5 @@ async def on_message(message):
         if message.content.startswith(command_prefix):
             # Ensure commands are processed
             await discord_bot.process_commands(message)
-    except TypeError:
-        logger("[Discord] TypeError occurred at `on_message` function", "ERROR")
-    except NameError:
-        logger("[Discord] NameError occurred at `on_message` function", "ERROR")
+    except Exception as e:
+        logger(f"[Telegram] Error occurred at `on_message` function: {e}", "ERROR")

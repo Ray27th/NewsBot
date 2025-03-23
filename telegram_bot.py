@@ -50,10 +50,8 @@ async def echo_handler(message: Message) -> None:
         await message.send_copy(chat_id=message.chat.id)
         await send_message_to_chat(message.chat.id, message.text)
         await send_message_to_chat(TELEGRAM_CHAT_ID, "This is just a repeat test")
-    except TypeError:
-        logger("[Telegram] TypeError occurred at `on_message` function", "ERROR")
-    except NameError:
-        logger("[Telegram] NameError occurred at `on_message` function", "ERROR")
+    except Exception as e:
+        logger(f"[Telegram] Error occurred at `on_message` function: {e}", "ERROR")
 
 
 async def send_message_to_chat(chat_id: int, message: str):

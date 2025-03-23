@@ -1,5 +1,5 @@
 # supabase_handler.py
-
+from typing import List
 import os
 import json
 import time
@@ -14,16 +14,23 @@ SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 TABLE = "syai_news"  # Change as needed
 SCHEMA = "public"
+DATE_COLUMN = "post_date"
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
-def get_data():
+def get_data_after_date(date_str: str = None) -> List:
     try:
-        response = supabase.table(TABLE).select("*").execute()
+        if date_str is None:
+            response = supabase.table(TABLE).select("*").execute()
+            return response.data
+        response = supabase.table(TABLE).select("*").gt(DATE_COLUMN, date_str).execute()
         return response.data
     except Exception as e:
-        logger(f"[Supabase] Error fetching data: {e}")
+        logger(
+            f"[Supabase] Error fetching data {f'after {date_str}' if date_str is not None else ''}: {e}",
+            "ERROR",
+        )
         return []
 
 
@@ -32,7 +39,7 @@ def insert_data(record: dict):
         response = supabase.table(TABLE).insert(record).execute()
         return response.data
     except Exception as e:
-        logger(f"[Supabase] Error inserting data: {e}")
+        logger(f"[Supabase] Error inserting data: {e}", "ERROR")
         return []
 
 
@@ -42,7 +49,7 @@ def start_realtime_listener():
     ws_url = f"wss://{clean_url}/realtime/v1/websocket?apikey={SUPABASE_KEY}&vsn=1.0.0"
 
     def on_open(ws):
-        logger("[Realtime] WebSocket opened")
+        logger("[Supabase] WebSocket opened")
 
         def send_heartbeat():
             ref = 3
@@ -63,7 +70,7 @@ def start_realtime_listener():
 
         # Step 1: JOIN the channel
         join_msg = {"topic": topic, "event": "phx_join", "payload": {}, "ref": "1"}
-        logger(f"[Realtime] Sending JOIN: {join_msg}")
+        logger(f"[Supabase] Sending JOIN: {join_msg}")
         ws.send(json.dumps(join_msg))
 
         # Step 2: Subscribe to INSERT/UPDATE/DELETE
@@ -74,26 +81,26 @@ def start_realtime_listener():
                 "payload": {"event": event_type, "schema": SCHEMA, "table": TABLE},
                 "ref": f"sub_{event_type.lower()}",
             }
-            logger(f"[Realtime] Sending subscription: {sub_msg}")
+            logger(f"[Supabase] Sending subscription: {sub_msg}")
             ws.send(json.dumps(sub_msg))
 
     def on_message(ws, message):
-        logger(f"[Realtime] Raw WebSocket Message: {message}")
+        logger(f"[Supabase] Raw WebSocket Message: {message}")
         try:
             data = json.loads(message)
             if data.get("event") == "postgres_changes":
                 payload = data.get("payload")
                 logger(
-                    f"[Realtime] Event: {payload['type']} — {json.dumps(payload, indent=2)}"
+                    f"[Supabase] Event: {payload['type']} — {json.dumps(payload, indent=2)}"
                 )
         except Exception as e:
-            logger(f"[Realtime] Message error: {e}")
+            logger(f"[Supabase] Message error: {e}")
 
     def on_error(ws, error):
-        logger(f"[Realtime] Error: {error}")
+        logger(f"[Supabase] Error: {error}")
 
     def on_close(ws, code, msg):
-        logger("[Realtime] WebSocket closed")
+        logger("[Supabase] WebSocket closed")
 
     def run_ws():
         ws = websocket.WebSocketApp(
@@ -108,4 +115,4 @@ def start_realtime_listener():
     # Run listener in background
     thread = threading.Thread(target=run_ws, daemon=True)
     thread.start()
-    logger("[Realtime] Listener started")
+    logger("[Supabase] Listener started")
