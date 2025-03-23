@@ -35,6 +35,7 @@ def get_data_after_date(date_str: str = None) -> List:
             .order(DATE_COLUMN)
             .execute()
         )
+        logger(f"[Data] {response.data}")
         return response.data
     except Exception as e:
         logger(

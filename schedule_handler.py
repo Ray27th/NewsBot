@@ -5,7 +5,7 @@ import pytz
 
 from app_instance import app
 from log_handler import logger
-from supabase_handler import get_data_after_date
+from supabase_handler import DATE_COLUMN, get_data_after_date
 from telegram_bot import send_message_to_chat, TELEGRAM_CHAT_ID
 
 # Define Singapore Timezone
@@ -29,12 +29,13 @@ async def tasks_loop():
     # Update news data every midnight
     if now.hour == midnight_time.hour and now.minute == midnight_time.minute:
         app.state.news_data = get_data_after_date(now.isoformat())
-
+    logger(f"{len(app.state.news_data)} LENGTH")
     if len(app.state.news_data) > 0:
         first_news_article = app.state.news_data[0]
         first_news_time = datetime.datetime.fromisoformat(
-            first_news_article["timestamp"]
+            first_news_article[DATE_COLUMN]
         ).astimezone(sgt)
+        logger(first_news_time.hour, now)
 
         if now.hour == first_news_time.hour and now.minute == first_news_time.minute:
             from discord_bot import (
@@ -47,7 +48,8 @@ async def tasks_loop():
             # Send Telegram Message
             await send_message_to_chat(
                 TELEGRAM_CHAT_ID,
-                f"<strong>{first_news_article['title']}</strong><br/><br/>{first_news_article['content']}",
+                f"""*{first_news_article["title"]}*\n\n{first_news_article["content"]}""",
+                2
             )
 
             # Send Discord Message
@@ -58,4 +60,4 @@ async def tasks_loop():
                     content=first_news_article["content"],
                 )
 
-            app.state.news_data = get_data_after_date(now.isoformat())
+            app.state.news_data = await get_data_after_date(now.isoformat())

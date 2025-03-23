@@ -43,7 +43,6 @@ async def startup() -> None:
 ### === FASTAPI ROUTES === ###
 @app.get("/")
 def start():
-    logger(f"[Data] {app.state.news_data}")
     return {"message": "Bots are active!"}
 
 
