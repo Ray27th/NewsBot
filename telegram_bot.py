@@ -38,9 +38,9 @@ async def greet_new_member(event: ChatMemberUpdated):
     await telegram_bot.send_message(chat_id, welcome_message)
 
 
-# @dp.message()
-# async def echo_handler(message: Message) -> None:
-#     logger(f"[Telegram Message] {message.from_user.username}: {message.text}")
+@dp.message()
+async def echo_handler(message: Message) -> None:
+    logger(f"[Telegram Message] {message.from_user.username}: {message.text}")
 #     if (
 #         message.from_user.id == (await telegram_bot.me()).id
 #     ):  # Ignore messages from the bot itself
