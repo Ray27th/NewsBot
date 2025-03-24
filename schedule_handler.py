@@ -29,7 +29,7 @@ async def tasks_loop():
     # Update news data every midnight
     if now.hour == midnight_time.hour and now.minute == midnight_time.minute:
         app.state.news_data = get_data_after_date(now.isoformat())
-    logger(f"{len(app.state.news_data)} LENGTH")
+    
     if len(app.state.news_data) > 0:
         first_news_article = app.state.news_data[0]
         first_news_time = datetime.datetime.fromisoformat(
