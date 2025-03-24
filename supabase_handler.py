@@ -119,14 +119,21 @@ def start_realtime_listener():
         logger("[Supabase] WebSocket closed")
 
     def run_ws():
-        ws = websocket.WebSocketApp(
-            ws_url,
-            on_open=on_open,
-            on_message=on_message,
-            on_error=on_error,
-            on_close=on_close,
-        )
-        ws.run_forever(ping_interval=20, ping_timeout=10)
+        while True:
+            try:
+                ws = websocket.WebSocketApp(
+                    ws_url,
+                    on_open=on_open,
+                    on_message=on_message,
+                    on_error=on_error,
+                    on_close=on_close,
+                )
+                ws.run_forever(ping_interval=20, ping_timeout=10)
+            except Exception as e:
+                logger(f"[Supabase] Exception in WebSocket loop: {e}", "ERROR")
+
+            logger("[Supabase] WebSocket disconnected. Reconnecting in 5 seconds...")
+            time.sleep(5)  # wait before retrying
 
     # Run listener in background
     thread = threading.Thread(target=run_ws, daemon=True)
