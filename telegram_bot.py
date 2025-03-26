@@ -1,6 +1,6 @@
 import os
 
-from aiogram import Bot, Dispatcher, html
+from aiogram import Bot, Dispatcher, F, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.filters import (
     ChatMemberUpdatedFilter,
