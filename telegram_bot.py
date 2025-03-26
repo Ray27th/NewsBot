@@ -8,7 +8,7 @@ from aiogram.filters import (
     IS_MEMBER,
     IS_NOT_MEMBER,
 )
-from aiogram.types import ChatMemberUpdated, Message
+from aiogram.types import ChatMemberStatus, ChatMemberUpdated, Message
 
 from log_handler import logger
 
