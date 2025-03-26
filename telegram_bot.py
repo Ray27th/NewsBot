@@ -38,6 +38,18 @@ async def greet_new_member(event: ChatMemberUpdated):
     await telegram_bot.send_message(chat_id, welcome_message)
 
 
+@dp.chat_member(F.new_chat_member.status == ChatMemberStatus.MEMBER)
+async def welcome_new_member(event: ChatMemberUpdated):
+    new_user = event.new_chat_member.user
+    chat_id = event.chat.id
+
+    await telegram_bot.send_message(
+        chat_id,
+        f"Welcome, {new_user.full_name}!"
+    )
+
+
+
 @dp.message()
 async def echo_handler(message: Message) -> None:
     logger(f"[Telegram Message] {message.from_user.username}: {message.text}")
