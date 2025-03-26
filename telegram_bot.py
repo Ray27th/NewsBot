@@ -28,7 +28,7 @@ async def echo_handler(message: Message) -> None:
     logger(f"[Telegram Message] {message.from_user.username}: {message.text}")
 
 
-@dp.message(CommandStart())
+@dp.message_handler(commands=['start'])
 async def command_start_handler(message: Message) -> None:
     await message.answer(f"Hello, {html.bold(message.from_user.full_name)}!")
 
