@@ -2,13 +2,14 @@ import os
 
 from aiogram import Bot, Dispatcher, F, html
 from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ChatMemberStatus
 from aiogram.filters import (
     ChatMemberUpdatedFilter,
     CommandStart,
     IS_MEMBER,
     IS_NOT_MEMBER,
 )
-from aiogram.types import ChatMemberStatus, ChatMemberUpdated, Message
+from aiogram.types import ChatMemberUpdated, Message
 
 from log_handler import logger
 
