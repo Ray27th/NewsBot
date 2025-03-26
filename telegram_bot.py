@@ -23,6 +23,11 @@ telegram_bot = Bot(
 
 
 ### === TELEGRAM BOT COMMAND HANDLERS === ###
+@dp.message()
+async def echo_handler(message: Message) -> None:
+    logger(f"[Telegram Message] {message.from_user.username}: {message.text}")
+
+
 @dp.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
     await message.answer(f"Hello, {html.bold(message.from_user.full_name)}!")
@@ -51,9 +56,6 @@ async def welcome_new_member(event: ChatMemberUpdated):
 
 
 
-@dp.message()
-async def echo_handler(message: Message) -> None:
-    logger(f"[Telegram Message] {message.from_user.username}: {message.text}")
 #     if (
 #         message.from_user.id == (await telegram_bot.me()).id
 #     ):  # Ignore messages from the bot itself
